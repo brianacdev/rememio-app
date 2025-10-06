@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
     try {
         const [userData, userMemorialsData] = await Promise.all([
-            userCRUD.query.getUser(userId),
+            userCRUD.query.getUserRequired(userId),
             userCRUD.query.getUserMemorials(userId),
         ])
         return {

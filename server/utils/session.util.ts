@@ -1,7 +1,7 @@
 import type { H3Event } from 'h3'
 
 import env from '~~/server/env'
-import type { AuthSessionAnonymous, AuthSessionAuthenticated } from '~~/shared/types/session.type'
+import type { AuthSessionAnonymous, AuthSessionAuthenticated, AuthStateSessionData } from '~~/shared/types/session.type'
 import { isAuthSessionAuthenticated, anonymousAuthSessionData } from '~~/shared/utils/session.util'
 
 export type AuthSessionAuthenticatedSecure = AuthSessionAuthenticated & {
@@ -11,7 +11,7 @@ export type AuthSessionAuthenticatedSecure = AuthSessionAuthenticated & {
     }
 }
 
-export type AuthSessionSecure = AuthSessionAnonymous | AuthSessionAuthenticatedSecure
+export type AuthSessionSecure = AuthSessionAnonymous | AuthSessionAuthenticatedSecure | AuthStateSessionData
 
 export const getAuthSessionData = async (event: H3Event) => {
     const authSession = await _useAuthSession(event)

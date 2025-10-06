@@ -10,6 +10,10 @@ export const updateUserNamesSchema = z.object({
     lastName: z.string().min(1, 'Last name is required'),
 })
 
+async function _getUser(userId: string) {
+    return await oneOrNullAsync(db.select().from(tables.users).where(funcs.eq(tables.users.userId, userId)))
+}
+
 export const userCRUD = {
     query: {
         getAllUsers: async () => {
@@ -30,8 +34,16 @@ export const userCRUD = {
             )
             return results?.photo
         },
-        getUser: async (userId: string) => {
-            return await oneAsync(db.select().from(tables.users).where(funcs.eq(tables.users.userId, userId)))
+        getUser: _getUser,
+        getUserRequired: async (userId: string) => {
+            const user = await _getUser(userId)
+            if (!user) {
+                throw createError({
+                    statusCode: 404,
+                    statusMessage: 'User not found',
+                })
+            }
+            return user
         },
         isBanned: async (userId: string) => {
             const banData = await oneAsync(
@@ -80,6 +92,9 @@ export const userCRUD = {
         },
     },
     mutate: {
+        createUser: async (userId: string, email: string, firstName: string, lastName: string) => {
+            return await db.insert(tables.users).values({ userId, email, firstName, lastName })
+        },
         updateUserNames: async (userId: string, firstName: string, lastName: string) => {
             return await db
                 .update(tables.users)

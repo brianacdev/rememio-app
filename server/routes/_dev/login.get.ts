@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
     }
 
     try {
-        const user = await userCRUD.query.getUser(userId)
+        const user = await userCRUD.query.getUserRequired(userId)
 
         if (!user) {
             throw createError({

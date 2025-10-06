@@ -4,6 +4,12 @@ export type AuthSessionAnonymous = {
     status: 'anonymous'
 }
 
+export type AuthStateSessionData = {
+    status: 'auth-state'
+    nonce: string
+    returnUrl: string
+}
+
 export type AuthSessionAuthenticated = {
     status: 'authenticated'
     userId: string
@@ -17,4 +23,4 @@ export type AuthSessionAuthenticated = {
     }
 }
 
-export type AuthSession = AuthSessionAnonymous | AuthSessionAuthenticated
+export type AuthSession = AuthSessionAnonymous | AuthSessionAuthenticated | AuthStateSessionData
